@@ -7,9 +7,8 @@ use std::fs::File;
 use std::io::prelude::*;
 
 struct Config {
-    username: String,
-    api_key: String,
-    port: u16,
+    student_name: String,
+    s_id: String,
 }
 
 impl Config {
@@ -19,19 +18,17 @@ impl Config {
         file.read_to_string(&mut contents).unwrap();
 
         let mut lines = contents.lines();
-        let username = lines.next().unwrap().to_string();
-        let api_key = lines.next().unwrap().to_string();
-        let port = lines.next().unwrap().parse().unwrap();
+        let student_name = lines.next().unwrap().to_string();
+        let s_id = lines.next().unwrap().to_string();
 
-        Config { username, api_key, port }
+        Config { student_name, s_id}
     }
 }
 
 fn reading_from_file() {
     let config = Config::from_file("my_files/config.txt");
-    println!("username: {}", config.username);
-    println!("api key: {}", config.api_key);
-    println!("port: {}", config.port);
+    println!("Name: {}", config.student_name);
+    println!("ID: {}", config.s_id);
 }
 
 fn main() {
