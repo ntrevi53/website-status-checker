@@ -1,77 +1,97 @@
-// use std::fs::File;
-// use std::io::Write;
+// // Define our data structure
+// struct Data {
+//     value: i32,
+// }
 
-// use std::io::{Read, BufReader, BufRead};
+// // Higher-order function: defines what needs to be done
+// fn process_data(data: &mut [Data], operation: fn(&mut Data)) {
+//     for item in data.iter_mut() {
+//         operation(item);
+//     }
+// }
 
-use std::fs::File;
-use std::io::prelude::*;
+// // Specific operations: actual functions which do the work
+// fn double_value(data: &mut Data) {
+//     data.value *= 2;
+// }
 
-struct Config {
-    student_name: String,
-    s_id: String,
+// fn square_value(data: &mut Data) {
+//     data.value = data.value * data.value;
+// }
+
+// // Helper function to print values without closures
+// fn print_values(items: &[Data]) {
+//     print!("Values: ");
+//     for (i, item) in items.iter().enumerate() {
+//         if i > 0 {
+//             print!(", ");
+//         }  
+//         print!("{}", item.value);
+//     }
+//     println!();
+// }
+
+// fn main() {
+//     let mut items = vec![
+//         Data { value: 1 },
+//         Data { value: 2 },
+//         Data { value: 3 },
+//         Data { value: 4 },
+//         Data { value: 5 },
+//     ];
+    
+//     // The specific operation is decided here
+//     print!("Original ");
+//     print_values(&items);
+    
+//     process_data(&mut items, double_value);
+//     print!("After doubling: ");
+//     print_values(&items);
+    
+//     // We can easily switch to a different operation
+//     process_data(&mut items, square_value);
+//     print!("After squaring: ");
+//     print_values(&items);
+//}
+
+//In class Assignment
+ 
+//Create a struct student (major)
+struct Student{
+    major:String,
 }
-
-impl Config {
-    fn from_file(path: &str) -> Config {
-        let mut file = File::open(path).unwrap();
-        let mut contents = String::new();
-        file.read_to_string(&mut contents).unwrap();
-
-        let mut lines = contents.lines();
-        let student_name = lines.next().unwrap().to_string();
-        let s_id = lines.next().unwrap().to_string();
-
-        Config { student_name, s_id}
+//Higher order functions update majors
+fn update_major(collection: &mut [Student],behavior:fn(&mut Student, String)) {
+    for student in collection.iter_mut() {
+        behavior(student, "Computer Science".to_string());
     }
 }
-
-fn reading_from_file() {
-    let config = Config::from_file("my_files/config.txt");
-    println!("Name: {}", config.student_name);
-    println!("ID: {}", config.s_id);
+//First Order functions, assign_major(student, major_declared)
+fn assign_major(s: &mut Student, major:String){
+    s.major = major;   
 }
 
-fn main() {
-    reading_from_file();
+fn print_students(students: &[Student]) {
+    println!("Major: ");
+    for (i,student) in students.iter().enumerate(){
+        println!("Student {} major {}", i+1, student.major)
+    }
+}
+//Create a vector for students1,2,3 and update all students major
+fn main(){
+    let mut students = vec![
+        Student {major: ("Biology").to_string()},
+        Student {major: ("Education").to_string()},
+        Student {major: ("Engineering").to_string(),}
+    ];
+
+    print!("Initial: ");
+    print_students(&students);
+    
+    update_major(&mut students, assign_major);
+
+    print!("Updated: ");
+    print_students(&students);
+    
 }
 
-
-
-
-
-
-// use std::io::{self, Read, Write};
-
-// struct Person {
-//     name: String,
-//     age: u32,
-// }
-
-// fn main() {
-//     let mut buffer = String::new();
-
-//     print!("What's your name? ");
-//     io::stdout().flush().unwrap();
-//     io::stdin().read_line(&mut buffer).unwrap();
-//     let name = buffer.trim().to_string();
-//     buffer.clear();
-
-//     print!("How old are you? ");
-//     io::stdout().flush().unwrap();
-//     io::stdin().read_line(&mut buffer).unwrap();
-//     let age = buffer.trim().parse().unwrap();
-
-//     let person = Person { name, age };
-//     println!("Hi {}, you are {} years old!", person.name, person.age);
-// }
-
-// fn main() {
-//     let mut file = OpenOptions::new()
-//         .append(true)
-//         .open("my_files/example3.txt")
-//         .unwrap();
-
-//     writeln!(file, "This line is appended to the file.").unwrap();
-
-
-// }    
