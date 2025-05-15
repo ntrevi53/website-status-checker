@@ -1,2 +1,2 @@
 # rustspring2025
-my coursework on rust
+A simple Rust command-line that checks the status of websites by sending HTTP Get requests.
